@@ -9,9 +9,10 @@ class ImageSlider extends StatefulWidget {
 }
 
 class _ImageSliderState extends State<ImageSlider> {
+  int _dotindicatoR = 0;
+
   @override
   Widget build(BuildContext context) {
-    int _dotindicatoR = 0;
 
     List<String> imgList = List.generate(
         3,
