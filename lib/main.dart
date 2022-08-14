@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:own_projeccts/screen/auth/login_screen.dart';
-import 'package:own_projeccts/screen/dashboard/navigation_bar.dart';
+import 'package:own_projeccts/screen/dashboard/home/navigation_bar.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:own_projeccts/screen/dashboard/image_slider.dart';
+import 'package:own_projeccts/screen/dashboard/home/image_slider.dart';
 import 'package:own_projeccts/screen/dashboard/search_screen/fake_data.dart';
-import 'package:own_projeccts/screen/dashboard/stories_view.dart';
+import 'package:own_projeccts/screen/dashboard/stories/stories_view.dart';
 
-import '../../utils/app_colors.dart';
+import '../../../utils/app_colors.dart';
 
 class InstaPost extends StatelessWidget {
   const InstaPost({Key? key}) : super(key: key);

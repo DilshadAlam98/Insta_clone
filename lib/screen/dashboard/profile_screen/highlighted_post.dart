@@ -42,7 +42,7 @@ class NewHighLightedPost extends StatelessWidget {
             size: 35,
           ),
         ),
-       const  Text("New")
+        const Text("New")
       ],
     );
   }

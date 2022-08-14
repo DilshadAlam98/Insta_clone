@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:own_projeccts/screen/dashboard/home_screen.dart';
+import 'package:own_projeccts/screen/dashboard/home/home_screen.dart';
 import 'package:own_projeccts/utils/app_colors.dart';
 import 'package:own_projeccts/widget/insta_button.dart';
 import 'package:own_projeccts/widget/insta_input_field.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:own_projeccts/screen/dashboard/insta_post.dart';
-import 'package:own_projeccts/screen/dashboard/stories_view.dart';
+import 'package:own_projeccts/screen/dashboard/home/insta_post.dart';
 import 'package:own_projeccts/widget/app_bar.dart';
 
 class HomeScreen extends StatelessWidget {

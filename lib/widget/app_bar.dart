@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:own_projeccts/screen/dashboard/chat/chat_screen.dart';
 
 import '../utils/app_colors.dart';
 
@@ -27,10 +28,16 @@ class InstaAppBar extends StatelessWidget {
         const SizedBox(
           width: 15,
         ),
-        Image.asset(
-          "assets/Messanger.png",
-          height: 24,
-          width: 22,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => const ChatScreen()));
+          },
+          child: Image.asset(
+            "assets/Messanger.png",
+            height: 24,
+            width: 22,
+          ),
         ),
         const SizedBox(
           width: 10,
