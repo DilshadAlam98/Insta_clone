@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:own_projeccts/screen/dashboard/chat/fake_chats_model.dart';
+import 'package:own_projeccts/widget/insta_input_field.dart';
 
 class ChatDetailPage extends StatefulWidget {
   const ChatDetailPage(
-      {Key? key, required this.id, required this.chatLog, this.friends})
+      {Key? key,
+      required this.id,
+      required this.chatLog,
+      this.profileUri,
+      this.userName,
+      this.available})
       : super(key: key);
 
   final int id;
   final List<FriendsChatLog> chatLog;
-  final Friends? friends;
+  final String? profileUri;
+  final String? userName;
+  final String? available;
 
   @override
   State<ChatDetailPage> createState() => _ChatDetailPageState();
@@ -16,6 +24,7 @@ class ChatDetailPage extends StatefulWidget {
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
   List<FriendsChatLog> chatmessages = [];
+  List<Chatlog>? chatlog;
 
   @override
   void initState() {
@@ -32,6 +41,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    chatmessages.forEach((element) {
+      chatlog = element.chatlog;
+    });
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -45,9 +57,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               children: [
                 CircleAvatar(
                     radius: 25,
-                    backgroundImage:
-                        NetworkImage(widget.friends?.picture ?? "")),
-                widget.friends?.status == "Available"
+                    backgroundImage: NetworkImage(widget.profileUri ?? "")),
+                widget.available == "Available"
                     ? const Positioned(
                         bottom: 0,
                         right: 0,
@@ -62,7 +73,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               width: 15,
             ),
             Text(
-              widget.friends?.name ?? "",
+              widget.userName ?? "",
               style: const TextStyle(color: Colors.black),
             ),
           ],
@@ -86,52 +97,85 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-          shrinkWrap: true,
-          itemCount: chatmessages.length,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(8),
+                itemCount: chatlog!.length,
+                itemBuilder: (context, index) {
+                  return Column(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 20,
-                        backgroundImage:
-                            NetworkImage(chatmessages[index].picture!),
-                      ),
-                      Flexible(
-                          child: Align(
-                        alignment:
-                            chatmessages[index].chatlog![index].side == "left"
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 20,
+                            backgroundImage: NetworkImage(widget.profileUri!),
+                          ),
+                          Flexible(
+                              child: Align(
+                            alignment: chatlog![index].side == "left"
                                 ? Alignment.centerLeft
                                 : Alignment.centerRight,
-                        child: Card(
-                            color: Colors.white54,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              // child: Text(chatmessages[index]
-                              //     .chatlog!
-                              //     .map((e) => e.text)
-                              //     .toList()
-                              //     .join()),
-
-                              child: Column(
-                                  children: chatmessages[index]
-                                      .chatlog!
-                                      .map((e) => Text(e.text ?? ""))
-                                      .toList()),
-                            )),
-                      ))
+                            child: Card(
+                                color: Colors.white54,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(chatlog![index].text!),
+                                      Stack(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(chatlog![index].timestamp!),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              const Text("seen")
+                                            ],
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )),
+                          ))
+                        ],
+                      ),
                     ],
+                  );
+                }),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+          padding: MediaQuery.of(context).viewInsets,
+          color: Colors.grey[300],
+          child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(15),
+                  suffixIcon: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.send),
                   ),
-                )
-              ],
-            );
-          }),
+                  prefixIcon: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.photo_album_outlined)),
+                  border: InputBorder.none,
+                  hintText: 'Type a message',
+                ),
+              ))),
     );
   }
 }

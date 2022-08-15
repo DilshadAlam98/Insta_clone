@@ -97,7 +97,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             builder: (context) => ChatDetailPage(
                               id: chats!.profile!.friends![index].id!,
                               chatLog: chats!.friendsChatLog!,
-                              friends: chats!.profile!.friends![index],
+                              userName: chats!.profile!.friends![index].name!,
+                              available: chats!.profile!.friends![index].status!,
+                              profileUri:
+                                  chats!.profile!.friends![index].picture!,
                             ),
                           ));
                     },
