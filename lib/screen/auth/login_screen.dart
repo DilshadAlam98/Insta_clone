@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:own_projeccts/screen/auth/register_user_screen.dart';
 import 'package:own_projeccts/screen/dashboard/home/home_screen.dart';
 import 'package:own_projeccts/utils/app_colors.dart';
 import 'package:own_projeccts/widget/insta_button.dart';
@@ -87,7 +88,14 @@ class LoginScreen extends StatelessWidget {
                           fontWeight: FontWeight.w400)),
                   TextSpan(
                       text: "Sign up",
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegisterUserScreen(),
+                              ));
+                        },
                       style: const TextStyle(
                           color: Colors.blue,
                           fontSize: 14,
