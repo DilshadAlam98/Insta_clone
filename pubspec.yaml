@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore:
   firebase_storage:
   image_picker:
+  rx_shared_preferences:
 
 dev_dependencies:
   flutter_test:

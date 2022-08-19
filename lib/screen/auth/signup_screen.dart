@@ -140,14 +140,14 @@ class SignupScreen extends StatelessWidget {
                             }
                             return InstaButton(
                                 onPressed: () async {
-                                  final isSignedUp =
+                                  final userAddedToDb =
                                       await authBloc.addUserToFirestore(
                                           bio: _bio,
                                           fName: _fName,
                                           lName: _lName,
                                           profile:
                                               authBloc.profileUrl.valueOrNull);
-                                  if (isSignedUp) {
+                                  if (userAddedToDb) {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

@@ -1,13 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:own_projeccts/bloc/auth_bloc.dart';
 import 'package:own_projeccts/screen/auth/register_user_screen.dart';
-import 'package:own_projeccts/screen/dashboard/home/home_screen.dart';
+import 'package:own_projeccts/screen/dashboard/home/navigation_bar.dart';
 import 'package:own_projeccts/utils/app_colors.dart';
 import 'package:own_projeccts/widget/insta_button.dart';
 import 'package:own_projeccts/widget/insta_input_field.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final _authBloc = AuthBloc();
+
+  String? _email;
+  String? _password;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +30,19 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(
               height: 39,
             ),
-            const InstaInputField(
+            InstaInputField(
+              onChanged: (email) {
+                _email = email;
+              },
               hintText: "user name or Email",
             ),
             const SizedBox(
               height: 12,
             ),
-            const InstaInputField(
+            InstaInputField(
+              onChanged: (password) {
+                _password = password;
+              },
               hintText: "Password",
             ),
             Container(
@@ -42,19 +53,32 @@ class LoginScreen extends StatelessWidget {
                 child: const Text("Forget Password?"),
               ),
             ),
-            InstaButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
+            StreamBuilder<bool>(
+                stream: _authBloc.isLoading,
+                builder: (context, snapshot) {
+                  if (snapshot.data ?? false) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return InstaButton(
+                      onPressed: () async {
+                        final signIn = await _authBloc.signInUser(
+                            email: _email, password: _password);
+                        if (signIn) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NavBar(),
+                              ));
+                        }
+                      },
+                      child: const Text(
+                        "Log in",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18),
                       ));
-                },
-                child: const Text(
-                  "Log in",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
-                )),
+                }),
             const SizedBox(
               height: 35,
             ),

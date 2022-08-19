@@ -1,33 +1,40 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:own_projeccts/req/user_req_firestore.dart';
+import 'package:own_projeccts/utils/error_message.dart';
 
 class FirebaseSource {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<String> signUp({String? email, String? password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
           email: email!, password: password!);
 
       return "Signed Up";
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return "The password provided is too weak.";
-      } else if (e.code == 'email-already-in-use') {
-        return "The account already exists for that email.";
-      } else {
-        return "Something Went Wrong.";
-      }
+      return getMessageFromErrorCode(e.code);
     } catch (e) {
       print(e);
     }
     return "Signed Up Failed";
+  }
+
+  Future<String> signInUser({String? email, String? password}) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+          email: email!, password: password!);
+      return "Signed In";
+    } on FirebaseAuthException catch (e) {
+      return getMessageFromErrorCode(e.code);
+    } catch (e) {
+      print("Signed IN failed");
+      print(e);
+    }
+    return "Sign In Failed";
   }
 
   Future<bool> addUserToDb({UserToFirestore? user}) async {

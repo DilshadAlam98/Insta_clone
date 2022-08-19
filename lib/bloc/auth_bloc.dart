@@ -30,31 +30,48 @@ class AuthBloc extends BaseBloc {
     return false;
   }
 
+  Future<bool> signInUser({String? email, String? password}) async {
+    isLoading.add(true);
+    final signIn = await authRepo.signInUser(email: email, password: password);
+    Fluttertoast.showToast(msg: signIn);
+    if (signIn == "Signed In") {
+      return true;
+    }
+    isLoading.add(false);
+    return false;
+  }
+
   Future<bool> addUserToFirestore(
       {String? fName, String? lName, String? bio, String? profile}) async {
     var uuid = const Uuid();
     var generator = UsernameGenerator();
-    final credential = FirebaseAuth.instance.currentUser;
+    final auth = FirebaseAuth.instance;
+
+
+
+
+    final jwtToken = await auth.currentUser?.getIdTokenResult();
     isUserAdded.add(true);
     var user = UserToFirestore(
         firstName: fName,
         lastName: lName,
         id: uuid.v1(),
         username: generator.generate(
-          "${credential!.email}",
+          "${auth.currentUser!.email}",
           date: DateTime.now(),
         ),
+        jwtToken: jwtToken?.token,
         bio: bio,
         displayName: "$fName" " " "$lName",
-        email: credential.email,
+        email: auth.currentUser!.email,
         isAvailble: false,
         profileUri: profile,
-        userId: credential.uid,
+        userId: auth.currentUser!.uid,
         cretedAt: Timestamp.now(),
         following: [],
         follower: [],
         posts: []);
-    if (credential.uid.isNotEmpty) {
+    if (auth.currentUser!.uid.isNotEmpty) {
       final isAdded = await authRepo.addUserToFirestore(user: user);
       return isAdded;
     }

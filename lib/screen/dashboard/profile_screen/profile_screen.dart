@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:own_projeccts/model/user_model.dart';
 import 'package:own_projeccts/screen/dashboard/profile_screen/highlighted_post.dart';
 import 'package:own_projeccts/widget/insta_button.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key, this.users}) : super(key: key);
+  final Users? users;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -78,13 +80,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 40,
-                      child: Icon(Icons.person),
+                      backgroundImage: NetworkImage(widget.users!.profileUri!),
                     ),
-                    profileHeader(value: 54, text: "Posts"),
-                    profileHeader(value: 834, text: "Followers"),
-                    profileHeader(value: 102, text: "Following"),
+                    profileHeader(
+                        value: widget.users!.posts!.length, text: "Posts"),
+                    profileHeader(
+                        value: widget.users!.following!.length,
+                        text: "Followers"),
+                    profileHeader(
+                        value: widget.users!.follower!.length,
+                        text: "Following"),
                   ],
                 ),
               ),
@@ -94,21 +101,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 alignment: Alignment.centerLeft,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      "Name",
-                      style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w600),
+                      widget.users!.displayName!,
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      "Bio",
-                      style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400),
+                      widget.users!.bio!,
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                     ),
-                    Text(
+                    const Text(
                       "Interst",
-                      style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                     )
                   ],
                 ),
@@ -130,8 +137,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(
                 height: 115,
                 child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15, horizontal: 15),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   shrinkWrap: true,
                   itemCount: 5,
                   scrollDirection: Axis.horizontal,
@@ -175,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisSpacing: 2,
                                 mainAxisSpacing: 2,
                                 childAspectRatio: 17.4 / 11.5),
-                        itemCount: 40,
+                        itemCount: widget.users!.posts!.length,
                         itemBuilder: (context, index) {
                           return SizedBox(
                             height: 124,
@@ -197,11 +204,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 childAspectRatio: 17.4 / 11.5),
                         itemCount: 40,
                         itemBuilder: (context, index) {
+                          if (widget.users?.posts?.isEmpty == true) {
+                            return const Center(
+                              child: Text("No Recent Posts found"),
+                            );
+                          }
                           return SizedBox(
                             height: 124,
                             width: 124,
                             child: Image.network(
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQphqmpunOcktIYDIfRzoWH76GnevhjUbgkw-KYFu2mT0uIavZDs4V_Ekyl_c8UTE95wX4&usqp=CAU",
+                              widget.users!.posts![index].postUri!,
                               fit: BoxFit.cover,
                             ),
                           );

@@ -13,6 +13,11 @@ class AuthRepo {
     return signup;
   }
 
+  Future<String> signInUser({String? email, String? password})async{
+    return await firebaseSource.signInUser(email:email, password: password);
+  }
+
+
   Future<bool> addUserToFirestore({UserToFirestore? user}) async {
     return await firebaseSource.addUserToDb(user: user);
   }
