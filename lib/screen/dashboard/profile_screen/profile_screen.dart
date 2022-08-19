@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:own_projeccts/model/user_model.dart';
+import 'package:own_projeccts/screen/dashboard/profile_screen/edit_profile.dart';
 import 'package:own_projeccts/screen/dashboard/profile_screen/highlighted_post.dart';
+import 'package:own_projeccts/utils/constant.dart';
 import 'package:own_projeccts/widget/insta_button.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -82,7 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundImage: NetworkImage(widget.users!.profileUri!),
+                      backgroundImage:
+                          NetworkImage(widget.users!.profileUri ?? ""),
                     ),
                     profileHeader(
                         value: widget.users!.posts!.length, text: "Posts"),
@@ -96,6 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Container(
+                padding: const EdgeInsets.only(right: 110),
                 margin:
                     const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 alignment: Alignment.centerLeft,
@@ -104,19 +108,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Text(
                       widget.users!.displayName!,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      widget.users!.bio!,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                      widget.users!.bio ?? '',
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w400),
                     ),
-                    const Text(
-                      "Interst",
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                    )
+                    GestureDetector(
+                      onTap: () {
+                        if (widget.users?.website != null &&
+                            widget.users?.website != "") {
+                          makeUrlRequest(url: widget.users!.website!);
+                        }
+                      },
+                      child: Text(
+                        widget.users!.website??"",
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blue),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -125,7 +139,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: InstaButton(
                     hight: 33,
                     color: Colors.white70,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                EditProfile(users: widget.users),
+                          ));
+                    },
                     child: const Text(
                       "Edit Profile",
                       style: TextStyle(

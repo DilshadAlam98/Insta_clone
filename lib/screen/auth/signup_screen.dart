@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:own_projeccts/bloc/auth_bloc.dart';
 import 'package:own_projeccts/screen/dashboard/home/navigation_bar.dart';
+import 'package:own_projeccts/utils/constant.dart';
 import 'package:own_projeccts/widget/insta_button.dart';
 import 'package:own_projeccts/widget/insta_input_field.dart';
 
@@ -10,6 +11,9 @@ class SignupScreen extends StatelessWidget {
   String _fName = "";
   String _lName = "";
   String _bio = "";
+  var list = ["Male", "Female", "Others"];
+  String dropDownValue = "Others";
+
   final authBloc = AuthBloc();
 
   @override
@@ -58,7 +62,7 @@ class SignupScreen extends StatelessWidget {
                                         right: 0,
                                         child: GestureDetector(
                                           onTap: () {
-                                            modelBottomSheet(context);
+                                            modelBottomSheet(context, authBloc);
                                           },
                                           child: const Icon(
                                             Icons.camera_alt_outlined,
@@ -95,13 +99,36 @@ class SignupScreen extends StatelessWidget {
                         height: 12,
                       ),
                       InstaInputField(
+                        maxLines: 5,
                         onChanged: (value) {
                           _bio = value;
                         },
                         hintText: "Bio",
                       ),
-                      const SizedBox(
-                        height: 12,
+                      Row(
+                        children: [
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width / 3.5,
+                              child: const Text("Gender")),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          StreamBuilder<String>(
+                              stream: authBloc.gender,
+                              builder: (context, snapshot) {
+                                return DropdownButton<String>(
+                                  underline: const Text("------------------"),
+                                  value: authBloc.gender.valueOrNull,
+                                  onChanged: (value) {
+                                    authBloc.gender.add(value!);
+                                  },
+                                  items: list
+                                      .map((e) => DropdownMenuItem<String>(
+                                          value: e, child: Text(e)))
+                                      .toList(),
+                                );
+                              })
+                        ],
                       ),
                       // InstaInputField(
                       //   onChanged: (value) {
@@ -145,6 +172,7 @@ class SignupScreen extends StatelessWidget {
                                           bio: _bio,
                                           fName: _fName,
                                           lName: _lName,
+                                          gender: authBloc.gender.valueOrNull,
                                           profile:
                                               authBloc.profileUrl.valueOrNull);
                                   if (userAddedToDb) {
@@ -169,51 +197,6 @@ class SignupScreen extends StatelessWidget {
                 ],
               );
             }),
-      ),
-    );
-  }
-
-  Future<dynamic> modelBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-      backgroundColor: Colors.blue,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      context: context,
-      builder: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            title: const Text(
-              "Image from Camera",
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            trailing: const Icon(
-              Icons.camera,
-              color: Colors.white,
-              size: 30,
-            ),
-            onTap: () async {
-              await authBloc.pickImage(imageSource: ImageSource.camera);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text(
-              "Image from Gallery",
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            trailing: const Icon(
-              Icons.photo,
-              color: Colors.white,
-              size: 30,
-            ),
-            onTap: () async {
-              await authBloc.pickImage(imageSource: ImageSource.gallery);
-              Navigator.pop(context);
-            },
-          ),
-        ],
       ),
     );
   }

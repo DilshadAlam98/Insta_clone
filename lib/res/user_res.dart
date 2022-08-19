@@ -6,6 +6,8 @@ class UsersRes {
   String? username;
   String? accessToken;
   String? bio;
+  String? website;
+  String? gender;
   String? email;
   String? phoneNumber;
   String? displayName;
@@ -17,6 +19,7 @@ class UsersRes {
   List<Following>? following;
   List<Follower>? follower;
   List<Posts>? posts;
+  List<String>? genderList;
 
   UsersRes(
       {this.firstName,
@@ -24,6 +27,8 @@ class UsersRes {
       this.username,
       this.accessToken,
       this.bio,
+      this.website,
+      this.gender,
       this.email,
       this.phoneNumber,
       this.displayName,
@@ -34,7 +39,8 @@ class UsersRes {
       this.isAvailable,
       this.following,
       this.follower,
-      this.posts});
+      this.posts,
+      this.genderList});
 
   UsersRes.fromJson(Map<String, dynamic> json) {
     firstName = json['first_name'];
@@ -42,6 +48,8 @@ class UsersRes {
     username = json['username'];
     accessToken = json['jwt_token'];
     bio = json['bio'];
+    website = json['website'];
+    gender = json['gender'];
     email = json['email'];
     phoneNumber = json["phone_number"];
     displayName = json["display_name"];
@@ -68,6 +76,7 @@ class UsersRes {
         posts!.add(new Posts.fromJson(v));
       });
     }
+    genderList = json['gender_list'].cast<String>();
   }
 }
 

@@ -8,10 +8,13 @@ class UserMapper extends BaseMapper<UsersRes, Users> {
     return Users(
         email: t.email,
         bio: t.bio,
+        website: t.website,
         phoneNumber: t.phoneNumber,
         userId: t.userId,
         profileUri: t.profileUri,
         id: t.id,
+        gender:t.gender,
+        genderList: t.genderList,
         isAvailable: t.isAvailable,
         posts: t.posts,
         username: t.username,

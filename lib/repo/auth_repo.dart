@@ -17,6 +17,10 @@ class AuthRepo {
     return await firebaseSource.signInUser(email:email, password: password);
   }
 
+  Future<bool>updateProfile({UserToFirestore? user}){
+    final update = firebaseSource.updateProfile(user: user);
+    return update;
+  }
 
   Future<bool> addUserToFirestore({UserToFirestore? user}) async {
     return await firebaseSource.addUserToDb(user: user);

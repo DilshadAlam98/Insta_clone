@@ -8,7 +8,7 @@ import 'package:own_projeccts/screen/dashboard/home/navigation_bar.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {

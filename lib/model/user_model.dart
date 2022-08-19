@@ -7,6 +7,8 @@ class Users {
   String? username;
   String? accessToken;
   String? bio;
+  String? website;
+  String? gender;
   String? email;
   String? phoneNumber;
   String? displayName;
@@ -18,6 +20,7 @@ class Users {
   List<Following>? following;
   List<Follower>? follower;
   List<Posts>? posts;
+  List<String>? genderList;
 
   Users(
       {this.firstName,
@@ -25,6 +28,8 @@ class Users {
       this.username,
       this.accessToken,
       this.bio,
+      this.website,
+      this.gender,
       this.email,
       this.phoneNumber,
       this.displayName,
@@ -35,7 +40,8 @@ class Users {
       this.isAvailable,
       this.following,
       this.follower,
-      this.posts});
+      this.posts,
+      this.genderList});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -44,6 +50,8 @@ class Users {
     data['username'] = this.username;
     data['jwt_token'] = this.accessToken;
     data['bio'] = bio;
+    data['website'] = website;
+    data['gender'] = gender;
     data['email'] = email;
     data["display_name"] = displayName;
     data["phone_number"] = phoneNumber;
@@ -60,6 +68,7 @@ class Users {
     if (this.posts != null) {
       data['posts'] = this.posts!.map((v) => v.toJson()).toList();
     }
+    data['gender_list'] = this.genderList;
     return data;
   }
 }

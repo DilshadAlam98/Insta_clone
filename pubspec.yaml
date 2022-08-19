@@ -48,6 +48,8 @@ dependencies:
   firebase_storage:
   image_picker:
   rx_shared_preferences:
+  circular_profile_avatar:
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   flutter_test:

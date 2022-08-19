@@ -37,6 +37,22 @@ class FirebaseSource {
     return "Sign In Failed";
   }
 
+  Future<bool> updateProfile({UserToFirestore? user}) async {
+    bool isUpdate=false;
+    try {
+      await _firestore.collection("users")
+          .doc(_auth.currentUser!.uid)
+          .update(user!.toJson())
+          .then((value) {
+        isUpdate= true;
+      });
+    } catch (e) {
+      print("Failed to update User in firestore");
+      print(e);
+    }
+    return isUpdate;
+  }
+
   Future<bool> addUserToDb({UserToFirestore? user}) async {
     bool isAdded = false;
     final fireStore =
