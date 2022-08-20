@@ -17,4 +17,8 @@ class LocalPrefs {
     final users = Stream.fromFuture(prefs.getString(prefsKey));
     return users.map((event) => UsersRes.fromJson(jsonDecode(event!)));
   }
+
+  Future<void> clear() async {
+    return prefs.clear();
+  }
 }

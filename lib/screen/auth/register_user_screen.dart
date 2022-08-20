@@ -64,10 +64,10 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                         final isSignedUp = await authBloc.signUpUser(
                             email: _email, password: _password);
                         if (isSignedUp) {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignupScreen(),
+                                builder: (context) => SignupScreen(isFromLogin: false),
                               ));
                         }
                       },

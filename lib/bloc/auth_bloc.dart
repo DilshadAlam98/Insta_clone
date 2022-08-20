@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:own_projeccts/base/base_bloc.dart';
 import 'package:own_projeccts/model/user_model.dart';
 import 'package:own_projeccts/repo/auth_repo.dart';
-import 'package:own_projeccts/res/user_res.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:username_generator/username_generator.dart';
 import 'package:uuid/uuid.dart';
@@ -42,7 +40,7 @@ class AuthBloc extends BaseBloc {
       String? username,
       String? webSite,
       String? phoneNumber}) async {
-    final displayName = name?.split("");
+    final displayName = name?.split(" ");
     var user = UserToFirestore(
       displayName: name ?? users?.displayName,
       jwtToken: users?.accessToken,
@@ -81,6 +79,19 @@ class AuthBloc extends BaseBloc {
     return false;
   }
 
+  Future<void> signOutUser() async {
+    return authRepo.signOutUser();
+  }
+
+  Future<void> removeUser() async {
+    return authRepo.removeUser();
+  }
+
+  Future<bool> isUserExistInDb() async {
+    final isExist = await authRepo.isUserExistInDb();
+    return isExist;
+  }
+
   Future<bool> addUserToFirestore(
       {String? fName,
       String? lName,
@@ -96,6 +107,8 @@ class AuthBloc extends BaseBloc {
     var user = UserToFirestore(
         firstName: fName,
         lastName: lName,
+        website: "",
+        phoneNumber: "",
         gender: gender,
         id: uuid.v1(),
         username: generator.generate(
@@ -116,19 +129,15 @@ class AuthBloc extends BaseBloc {
         genderList: ["Male", "Female", "Others"]);
     if (auth.currentUser!.uid.isNotEmpty) {
       final isAdded = await authRepo.addUserToFirestore(user: user);
+      isUserAdded.add(false);
       return isAdded;
     }
-    isUserAdded.add(false);
     return false;
   }
 
-  /// Get from gallery
   Future<void> pickImage({required ImageSource imageSource}) async {
     PickedFile? pickedFile = await ImagePicker().getImage(
-      source: imageSource,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
+        source: imageSource, maxWidth: 1800, maxHeight: 1800, imageQuality: 20);
     if (pickedFile != null) {
       isProfileUrlAvailable.add(true);
       final downloadLink = await authRepo.getProfileUrlFromStorage(
@@ -145,6 +154,7 @@ class AuthBloc extends BaseBloc {
     profileUrl.close();
     isUserAdded.close();
     subscription.cancel();
+    gender.close();
     hideKeyboardSubject.close();
   }
 }

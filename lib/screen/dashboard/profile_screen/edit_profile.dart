@@ -269,6 +269,7 @@ class _EditProfileState extends State<EditProfile> {
           Expanded(
               child: TextFormField(
             onChanged: onChanged,
+            minLines: 1,
             maxLines: maxLines,
             initialValue: initialValue,
           ))

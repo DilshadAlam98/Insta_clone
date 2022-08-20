@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:own_projeccts/helper/local_prefs.dart';
 import 'package:own_projeccts/req/user_req_firestore.dart';
 import 'package:own_projeccts/utils/error_message.dart';
 
 class FirebaseSource {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  final prefs = LocalPrefs();
 
   Future<String> signUp({String? email, String? password}) async {
     try {
@@ -37,20 +39,42 @@ class FirebaseSource {
     return "Sign In Failed";
   }
 
+  Future<void> signOutUser() async {
+    return _auth.signOut().then((value) => prefs.clear());
+  }
+
+  Future<void>removeUser()async{
+    return await _auth.currentUser?.delete();
+  }
+
   Future<bool> updateProfile({UserToFirestore? user}) async {
-    bool isUpdate=false;
+    bool isUpdate = false;
     try {
-      await _firestore.collection("users")
+      await _firestore
+          .collection("users")
           .doc(_auth.currentUser!.uid)
           .update(user!.toJson())
           .then((value) {
-        isUpdate= true;
+        isUpdate = true;
       });
     } catch (e) {
       print("Failed to update User in firestore");
       print(e);
     }
     return isUpdate;
+  }
+
+  Future<bool> isUserExistInDb() async {
+   return await _firestore
+        .collection("user")
+        .doc(_auth.currentUser!.uid)
+        .get()
+        .then((value) => value.exists);
+    // final isAuthenticated = _auth.currentUser!.uid;
+    // if (isExist== true && isAuthenticated!=null) {
+    //   return true;
+    // }
+    // return false;
   }
 
   Future<bool> addUserToDb({UserToFirestore? user}) async {

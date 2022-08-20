@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:own_projeccts/bloc/auth_bloc.dart';
 import 'package:own_projeccts/model/user_model.dart';
+import 'package:own_projeccts/screen/auth/login_screen.dart';
 import 'package:own_projeccts/screen/dashboard/profile_screen/edit_profile.dart';
 import 'package:own_projeccts/screen/dashboard/profile_screen/highlighted_post.dart';
 import 'package:own_projeccts/utils/constant.dart';
@@ -22,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     'User 5',
   ];
   String dropdownvalue = 'User 1';
-
+final _authBloc =AuthBloc();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -124,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         }
                       },
                       child: Text(
-                        widget.users!.website??"",
+                        widget.users!.website ?? "",
                         style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -134,6 +136,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
+              ElevatedButton(onPressed: () {
+                _authBloc.signOutUser().then((value) =>  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginScreen()
+                    ),
+                    ModalRoute.withName("/Home")
+                ));
+              }, child: Text("LogOut")),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: InstaButton(
@@ -196,49 +207,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: TabBarView(
                   children: [
-                    GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 2,
-                                mainAxisSpacing: 2,
-                                childAspectRatio: 17.4 / 11.5),
-                        itemCount: widget.users!.posts!.length,
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                            height: 124,
-                            width: 124,
-                            child: Image.network(
-                              "https://cdn.pixabay.com/photo/2018/01/28/11/24/sunflower-3113318_960_720.jpg",
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        }),
+                    widget.users?.posts?.isEmpty == true
+                        ? const Center(
+                            child: Text("No Recent Posts found"),
+                          )
+                        : GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 2,
+                                    mainAxisSpacing: 2,
+                                    childAspectRatio: 17.4 / 11.5),
+                            itemCount: widget.users!.posts!.length,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                height: 124,
+                                width: 124,
+                                child: Image.network(
+                                  "https://cdn.pixabay.com/photo/2018/01/28/11/24/sunflower-3113318_960_720.jpg",
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            }),
 
                     // second tab bar viiew widget
-                    GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 2,
-                                mainAxisSpacing: 2,
-                                childAspectRatio: 17.4 / 11.5),
-                        itemCount: 40,
-                        itemBuilder: (context, index) {
-                          if (widget.users?.posts?.isEmpty == true) {
-                            return const Center(
-                              child: Text("No Recent Posts found"),
-                            );
-                          }
-                          return SizedBox(
-                            height: 124,
-                            width: 124,
-                            child: Image.network(
-                              widget.users!.posts![index].postUri!,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        }),
+                    widget.users?.posts?.isEmpty == true
+                        ? const Center(
+                            child: Text("No Recent Posts found"),
+                          )
+                        : GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 2,
+                                    mainAxisSpacing: 2,
+                                    childAspectRatio: 17.4 / 11.5),
+                            itemCount: 40,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                height: 124,
+                                width: 124,
+                                child: Image.network(
+                                  widget.users!.posts![index].postUri!,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            }),
                   ],
                 ),
               )

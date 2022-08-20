@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:own_projeccts/bloc/auth_bloc.dart';
+import 'package:own_projeccts/screen/auth/login_screen.dart';
 import 'package:own_projeccts/screen/dashboard/home/navigation_bar.dart';
 import 'package:own_projeccts/utils/constant.dart';
 import 'package:own_projeccts/widget/insta_button.dart';
 import 'package:own_projeccts/widget/insta_input_field.dart';
 
 class SignupScreen extends StatelessWidget {
-  SignupScreen({Key? key}) : super(key: key);
+  SignupScreen({Key? key, required this.isFromLogin}) : super(key: key);
   String _fName = "";
   String _lName = "";
   String _bio = "";
+  bool isFromLogin = false;
   var list = ["Male", "Female", "Others"];
   String dropDownValue = "Others";
 
@@ -189,6 +191,20 @@ class SignupScreen extends StatelessWidget {
                                   style: TextStyle(fontSize: 18),
                                 ));
                           }),
+
+                      isFromLogin
+                          ? TextButton(
+                              onPressed: () {
+                                authBloc
+                                    .removeUser()
+                                    .then((value) => Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginScreen(),
+                                        )));
+                              },
+                              child: const Text("Remove account"))
+                          : const Text(''),
                     ],
                   ),
                   snapshot.data == true

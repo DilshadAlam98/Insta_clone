@@ -13,13 +13,25 @@ class AuthRepo {
     return signup;
   }
 
-  Future<String> signInUser({String? email, String? password})async{
-    return await firebaseSource.signInUser(email:email, password: password);
+  Future<String> signInUser({String? email, String? password}) async {
+    return await firebaseSource.signInUser(email: email, password: password);
   }
 
-  Future<bool>updateProfile({UserToFirestore? user}){
-    final update = firebaseSource.updateProfile(user: user);
+  Future<bool> updateProfile({UserToFirestore? user}) async {
+    final update = await firebaseSource.updateProfile(user: user);
     return update;
+  }
+
+  Future<void> signOutUser() async {
+    return await firebaseSource.signOutUser();
+  }
+
+  Future<void> removeUser() async {
+    return await firebaseSource.removeUser();
+  }
+
+  Future<bool> isUserExistInDb() async {
+    return await firebaseSource.isUserExistInDb();
   }
 
   Future<bool> addUserToFirestore({UserToFirestore? user}) async {
