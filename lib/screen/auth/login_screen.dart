@@ -18,10 +18,10 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-          future: _authBloc.isUserExistInDb(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+      body: StreamBuilder(
+          stream: _authBloc.isUserExistInDb(),
+          builder: (context, snapshot) {
+            if (snapshot.data == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
 
             /// user authenticated but database is not exist
             if (snapshot.data == false) {
-              return SignupScreen(isFromLogin:true);
+              return SignupScreen(isFromLogin: true);
             }
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

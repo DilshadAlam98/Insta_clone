@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:own_projeccts/bloc/home_bloc.dart';
+import 'package:own_projeccts/model/user_model.dart';
 import 'package:own_projeccts/screen/dashboard/home/insta_post.dart';
 import 'package:own_projeccts/widget/app_bar.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
 
-class _HomeScreenState extends State<HomeScreen> {
-
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key,this.users}) : super(key: key);
+  final Users? users;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        appBar: PreferredSize(
+    return  Scaffold(
+        appBar: const PreferredSize(
             preferredSize: Size.fromHeight(50), child: InstaAppBar()),
-        body: InstaPost());
+        body: InstaPost(users:users));
   }
+
 }

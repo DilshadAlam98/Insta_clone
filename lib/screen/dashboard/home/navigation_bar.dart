@@ -27,7 +27,7 @@ class _NavBarState extends State<NavBar> {
 
   List<Widget> navigationWidget({Users? data}) {
     return [
-      const HomeScreen(),
+       HomeScreen(users:data),
       const SearchScreen(),
       const Center(
         child: Text("add post screen"),

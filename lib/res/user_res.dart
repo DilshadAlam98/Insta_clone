@@ -173,7 +173,7 @@ class Posts {
   Posts.fromJson(Map<String, dynamic> json) {
     caption = json['caption'];
     postUri = json['postUri'];
-    postedAt = json['postedAt'];
+    // postedAt = json['postedAt'];
     location = json['location'];
     if (json['comments'] != null) {
       comments = <Comments>[];

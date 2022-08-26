@@ -50,6 +50,9 @@ dependencies:
   rx_shared_preferences:
   circular_profile_avatar:
   url_launcher: ^6.1.5
+  image_crop:
+  geolocator: ^9.0.1
+  geocoding:
 
 dev_dependencies:
   flutter_test:

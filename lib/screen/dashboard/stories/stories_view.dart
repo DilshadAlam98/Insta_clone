@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:own_projeccts/model/user_model.dart';
 import 'package:own_projeccts/screen/dashboard/stories/add_stories.dart';
 import 'package:own_projeccts/screen/dashboard/stories/dummy_story_data.dart';
 import 'package:own_projeccts/screen/dashboard/stories/stories_detail.dart';
@@ -6,8 +7,10 @@ import 'package:status_view/status_view.dart';
 
 class StoriesView extends StatelessWidget {
   final List<Map<String, String>> storiesList;
+  final Users? users;
 
-  const StoriesView({Key? key, required this.storiesList}) : super(key: key);
+  const StoriesView({Key? key, required this.storiesList, this.users})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class StoriesView extends StatelessWidget {
     sampleUsers.addAll(list);
     return Container(
       alignment: Alignment.centerLeft,
-      height: 95,
+      height: 97,
       child: ListView.separated(
           padding: const EdgeInsets.all(9),
           itemCount: sampleUsers.length,
@@ -30,7 +33,7 @@ class StoriesView extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return const AddStories();
+              return  AddStories(users:users);
             }
             return GestureDetector(
               onTap: () {

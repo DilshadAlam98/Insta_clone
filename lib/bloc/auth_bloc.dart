@@ -87,8 +87,8 @@ class AuthBloc extends BaseBloc {
     return authRepo.removeUser();
   }
 
-  Future<bool> isUserExistInDb() async {
-    final isExist = await authRepo.isUserExistInDb();
+  Stream<bool> isUserExistInDb() {
+    final isExist = Stream.fromFuture(authRepo.isUserExistInDb());
     return isExist;
   }
 

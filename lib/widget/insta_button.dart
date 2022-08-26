@@ -7,6 +7,7 @@ class InstaButton extends StatelessWidget {
   final Color? color;
   final double? hight;
   final double? width;
+  final double? circular;
 
   const InstaButton(
       {Key? key,
@@ -14,6 +15,7 @@ class InstaButton extends StatelessWidget {
       required this.child,
       this.color,
       this.hight,
+      this.circular,
       this.width})
       : super(key: key);
 
@@ -22,12 +24,15 @@ class InstaButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: color ?? buttonColor,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(circular ?? 5),
       ),
       height: hight ?? 44,
       width: width ?? MediaQuery.of(context).size.width,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: color),
+        style: ElevatedButton.styleFrom(
+            primary: color,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(circular ?? 0))),
         child: child,
         onPressed: onPressed,
       ),

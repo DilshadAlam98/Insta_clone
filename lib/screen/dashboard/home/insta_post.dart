@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:own_projeccts/bloc/post-bloc.dart';
+import 'package:own_projeccts/model/user_model.dart';
 import 'package:own_projeccts/screen/dashboard/home/image_slider.dart';
 import 'package:own_projeccts/screen/dashboard/search_screen/fake_data.dart';
 import 'package:own_projeccts/screen/dashboard/stories/stories_view.dart';
 
 import '../../../utils/app_colors.dart';
 
-class InstaPost extends StatelessWidget {
-  const InstaPost({Key? key}) : super(key: key);
+class InstaPost extends StatefulWidget {
+  const InstaPost({Key? key, this.users}) : super(key: key);
+  final Users? users;
 
+  @override
+  State<InstaPost> createState() => _InstaPostState();
+}
+
+class _InstaPostState extends State<InstaPost> {
+  final postBloc = PostBloc();
+  @override
+  void initState() {
+    super.initState();
+    postBloc.fetchPosts();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +35,7 @@ class InstaPost extends StatelessWidget {
               return index == 0
                   ? Column(
                       children: [
-                        StoriesView(storiesList: storiesList),
+                        StoriesView(storiesList: storiesList,users:widget.users),
                         const Divider(
                           thickness: 1,
                         ),
